@@ -1,3 +1,24 @@
-body {
-  background: goldenrod;
+.app {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.popular {
+
+}
+
+ul {
+  list-style: none;
+  display: inline-flex;
+  text-align: center;
+  margin: 0 auto;
+}
+
+ul li {
+  padding: 10px 30px;
+  cursor: pointer;
+}
+
+ul li.selected {
+  color: brown;
 }
