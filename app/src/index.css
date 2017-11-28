@@ -22,3 +22,9 @@ ul li {
 ul li.selected {
   color: brown;
 }
+
+.popular-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
