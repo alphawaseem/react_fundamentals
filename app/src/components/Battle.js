@@ -1,4 +1,7 @@
 var React = require('react');
+var PropTypes = require('prop-types');
+
+var Link = require('react-router-dom').Link;
 
 class Battle extends React.Component {
 
@@ -11,6 +14,7 @@ class Battle extends React.Component {
       playerTwoImage: ''
     }
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleReset = this.handleReset.bind(this);
   }
 
   handleSubmit(id, username) {
@@ -23,14 +27,39 @@ class Battle extends React.Component {
     });
   }
 
+  handleReset(id) {
+    let newState = {};
+    newState[id + "Name"] = '';
+    newState[id + "Image"] = '';
+    this.setState(() => {
+      return newState;
+    });
+  }
+
   render() {
     return (
       <div>
         {!this.state.playerOneName && <PlayerInput
           id="playerOne" title="Player One" onSubmit={this.handleSubmit} />}
-        {!this.state.playerTwoName && <PlayerInput
-          id="playerTwo" title="Player Two" onSubmit={this.handleSubmit}/>}
 
+        {this.state.playerOneImage && <PlayerPreview
+          id="playerOne" avatar={this.state.playerOneImage}
+          username={this.state.playerOneName} onReset={this.handleReset} />}
+
+        {!this.state.playerTwoName && <PlayerInput
+          id="playerTwo" title="Player Two" onSubmit={this.handleSubmit} />}
+
+        {this.state.playerTwoImage && <PlayerPreview
+          id="playerTwo" avatar={this.state.playerTwoImage}
+          username={this.state.playerTwoName} onReset={this.handleReset} />}
+
+
+        {this.state.playerOneImage && this.state.playerTwoImage &&
+          <Link to={{
+            pathname: this.props.match.url + '/results',
+            search: '?playerOneName=' + this.state.playerOneName + '&playerTwoName=' + this.state.playerTwoName
+          }}>Battle</Link>
+        }
       </div>
     );
   }
@@ -75,6 +104,28 @@ class PlayerInput extends React.Component {
     )
   }
 
+}
+
+const PlayerPreview = (props) => {
+  return (
+    <div>
+      <div className="column">
+        <img src={props.avatar} alt={"Avatar for " + props.username} className="avatar" />
+        <h2 className="username">@{props.username}</h2>
+      </div>
+      <button className="reset" onClick={props.onReset.bind(null, props.id)}>
+        Reset
+      </button>
+
+    </div>
+  )
+}
+
+PlayerPreview.propTypes = {
+  avatar: PropTypes.string.isRequired,
+  username: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  onReset: PropTypes.func.isRequired
 }
 
 module.exports = Battle;
