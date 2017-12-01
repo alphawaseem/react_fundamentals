@@ -69,7 +69,7 @@ class PlayerInput extends React.Component {
         <form onSubmit={this.handleSubmit} >
 
           <label htmlFor="username"><input name="username" id="username" value={this.state.value} onChange={this.updateUsername} /></label>
-          <input type="submit" value="Submit" />
+          <input type="submit" value="Submit" disabled={!this.state.username} />
         </form>
       </div>
     )
